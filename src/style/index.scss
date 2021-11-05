@@ -1,0 +1,25 @@
+$base: 75;
+
+@function rem($size) {
+  @return $size / $base * 1rem;
+}
+
+body,
+html {
+  height: 100%;
+}
+body {
+  font-size: 14px;
+}
+
+#app {
+  height: 100%;
+  // display: flex;
+  // flex-direction: column;
+  .main-wrapper {
+    // flex: 1;
+    height: calc(100% - rem(50));
+  }
+}
+
+@import './home';
