@@ -2,8 +2,7 @@
   <div class="home-swiper">
     <van-swipe class="swipe-container" v-if="sliders.length" :autoplay="3000">
       <van-swipe-item v-for="slider in sliders" :key="slider">
-        {{ slider }}
-        <!-- <img src="" alt="" srcset=""> -->
+        <img class="swiper-img" :src="slider.url" alt="" srcset="" />
       </van-swipe-item>
     </van-swipe>
   </div>
@@ -28,15 +27,3 @@ export default defineComponent({
   }
 });
 </script>
-
-<style lang="scss" scoded>
-.swipe-container {
-  .van-swipe-item {
-    color: #fff;
-    font-size: 20px;
-    line-height: 150px;
-    text-align: center;
-    background-color: #39a9ed;
-  }
-}
-</style>

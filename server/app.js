@@ -6,50 +6,72 @@
 
 const fs = require('fs');
 const express = require('express');
+const path = require('path');
 const app = express();
 // const router = express.Router();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+// 静态服务
+app.use(
+  express.static(path.resolve(__dirname, './static'), {
+    setHeaders(res, path, stat) {
+      res.set('Access-Control-Allow-Origin', '*');
+    }
+  })
+);
 
 // 跨域处理
 app.all('*', (req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
-  next();
+  res.header('Access-Control-Allow-Headers', 'content-type');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+  //让options尝试请求快速结束
+  if (req.method.toLowerCase() == 'options') res.sendStatus(200);
+  else next();
 });
 
-//post good
-app.post('/addGood', (req, res) => {
-  let mc = req.body.mc;
-  if (mc) {
-    readStream('./src/json/goodsList.json', data => {
-      let addition = {
-        id: new Date().getTime(),
-        mc
-      };
-      data = JSON.parse(data);
-      data.push(addition);
-      data = JSON.stringify(data);
-      wrieteStream('./src/json/goodsList.json', data, () => {
-        res.json({ message: '新增成功' });
-      });
+//post getLessonList
+app.post('/getLessonList', (req, res) => {
+  const { category, limit, offset } = req.body;
+  if (category !== undefined) {
+    readStream('./json/lessonList.json', data => {
+      let allLessons = JSON.parse(data);
+      let hasMore = false,
+        list = [];
+      if (offset < allLessons.length) {
+        list = allLessons.slice(offset, offset + limit);
+      }
+      if (offset + limit <= allLessons.length) {
+        hasMore = true;
+      }
+      setTimeout(() => {
+        res.json({
+          code: 0,
+          message: 'success',
+          data: {
+            hasMore,
+            list
+          }
+        });
+      }, 1000);
     });
   } else {
-    res.status(403).json({ result: [], message: '缺失入参' });
+    res.status(403).json({ code: -1, data: {}, message: '缺失入参category' });
   }
 });
 
-//get slidersList
+//get getSlidersList
 app.get('/getSlidersList', (req, res) => {
   // const { url, method, query, params } = req;
   readStream('./json/slidersList.json', data => {
     setTimeout(() => {
-      res.status(200).send({
+      res.status(200).json({
         code: 0,
         message: 'success',
         data: JSON.parse(data)
       });
-    }, 3000);
+    }, 1500);
   });
 });
 

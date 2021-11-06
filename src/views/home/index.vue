@@ -12,7 +12,7 @@
       </template>
     </Suspense>
     <!-- 课程列表 -->
-    <HomeList />
+    <HomeList :lessonList="lessonList" />
   </div>
 </template>
 
@@ -38,16 +38,26 @@ function useCategory(store: Store<IGlobalState>) {
   };
 }
 
+function useLessonList(store: Store<IGlobalState>) {
+  let lessonList = computed(() => store.state.home.lessons.list);
+  if (!lessonList.value.length) {
+    store.dispatch(`home/${Types.SET_LESSON_LIST}`);
+  }
+  return { lessonList };
+}
+
 export default defineComponent({
   name: 'Home',
   components: { HomeHeader, HomeSwiper, HomeList },
   setup() {
     const store = useStore<IGlobalState>();
     let { category, setCurrentCategory } = useCategory(store);
+    let { lessonList } = useLessonList(store);
 
     return {
       category,
-      setCurrentCategory
+      setCurrentCategory,
+      lessonList
     };
   }
 });

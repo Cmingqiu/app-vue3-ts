@@ -5,9 +5,15 @@ export enum CATEGORY_TYPES {
   NODE
 }
 
+export interface ILessonsParams {
+  category: CATEGORY_TYPES;
+  offset: number;
+  limit: number;
+}
+
 export interface ILesson {
   title: string;
-  video: string;
+  video?: string;
   poster: string;
   price: number;
   category?: string;

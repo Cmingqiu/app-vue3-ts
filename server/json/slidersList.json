@@ -1,1 +1,6 @@
-[1, 2, 3, 4, 5]
+[
+  { "url": "http://localhost:9000/imgs/huoying.jpeg" },
+  { "url": "http://localhost:9000/imgs/piano.jpeg" },
+  { "url": "http://localhost:9000/imgs/rainbow.jpeg" },
+  { "url": "http://localhost:9000/imgs/romantic.jpeg" }
+]

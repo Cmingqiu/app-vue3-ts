@@ -1,0 +1,10 @@
+// 修改vant样式
+.van-dropdown-menu {
+  .van-dropdown-menu__bar {
+    background-color: #333;
+    height: auto;
+    .van-dropdown-menu__title {
+      color: #fff;
+    }
+  }
+}
